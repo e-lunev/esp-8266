@@ -19,8 +19,8 @@ void loop() {
 }
 ```
 3. Схема подключения модуля esp-01 и UART преобразователя:
-<img src="circuit/esp-01_arduino_ideSketch_bb.png"
+<p><img src="circuit/esp-01_arduino_ideSketch_bb.png"
      alt=""
      title=""
      width="500" height="400"
-/>
+/></p>
