@@ -14,6 +14,7 @@ const char* password = STAPSK;
 ESP8266WebServer server(80);
 
 const int led = LED_BUILTIN;
+const int pin = 2;
 
 const String postForms = "<html>\
   <head>\
@@ -42,32 +43,14 @@ void handleRoot() {
   digitalWrite(led, 0);
 }
 
-void handlePlain() {
-  if (server.method() != HTTP_POST) {
-    digitalWrite(led, 1);
-    server.send(405, "text/plain", "Method Not Allowed");
-    digitalWrite(led, 0);
-  } else {
-    digitalWrite(led, 1);
-    server.send(200, "text/plain", "POST body was:\n" + server.arg("plain"));
-    digitalWrite(led, 0);
-  }
+void handleOn() {
+    server.send(200, "text/plain", "On");
+    digitalWrite(pin, HIGH);
 }
 
-void handleForm() {
-  if (server.method() != HTTP_POST) {
-    digitalWrite(led, 1);
-    server.send(405, "text/plain", "Method Not Allowed");
-    digitalWrite(led, 0);
-  } else {
-    digitalWrite(led, 1);
-    String message = "POST form was:\n";
-    for (uint8_t i = 0; i < server.args(); i++) {
-      message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
-    }
-    server.send(200, "text/plain", message);
-    digitalWrite(led, 0);
-  }
+void handleOff() {
+    server.send(200, "text/plain", "Off");
+     digitalWrite(pin, LOW);
 }
 
 void handleNotFound() {
@@ -88,7 +71,7 @@ void handleNotFound() {
 }
 
 void setup(void) {
-  pinMode(led, OUTPUT);
+  pinMode(pin, OUTPUT);
   digitalWrite(led, 0);
   Serial.begin(115200);
   WiFi.begin(ssid, password);
@@ -111,9 +94,9 @@ void setup(void) {
 
   server.on("/", handleRoot);
 
-  server.on("/postplain/", handlePlain);
+  server.on("/on", handleOn);
 
-  server.on("/postform/", handleForm);
+  server.on("/off", handleOff);
 
   server.onNotFound(handleNotFound);
 
