@@ -18,29 +18,24 @@ const int pin = 2;
 
 const String postForms = "<html>\
   <head>\
-    <title>ESP8266 Web Server POST handling</title>\
+    <title>ESP Web Server</title>\
     <style>\
-      body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
+      html {font-family: Arial; display: inline-block; text-align: center;}\
+      h2 {font-size: 3.0rem;}\
+      p {font-size: 3.0rem;}\
+      body { background-color: white; font-family: Arial, Helvetica, Sans-Serif; Color: black; }\
     </style>\
   </head>\
   <body>\
-    <h1>POST plain text to /postplain/</h1><br>\
-    <form method=\"post\" enctype=\"text/plain\" action=\"/postplain/\">\
-      <input type=\"text\" name=\'{\"hello\": \"world\", \"trash\": \"\' value=\'\"}\'><br>\
-      <input type=\"submit\" value=\"Submit\">\
-    </form>\
-    <h1>POST form data to /postform/</h1><br>\
-    <form method=\"post\" enctype=\"application/x-www-form-urlencoded\" action=\"/postform/\">\
-      <input type=\"text\" name=\"hello\" value=\"world\"><br>\
-      <input type=\"submit\" value=\"Submit\">\
+      <h2>ESP Web Server</h2>\
+      <input type=\"submit\" value=\"on\">\
+      <input type=\"submit\" value=\"off\">\
     </form>\
   </body>\
 </html>";
 
 void handleRoot() {
-  digitalWrite(led, 1);
   server.send(200, "text/html", postForms);
-  digitalWrite(led, 0);
 }
 
 void handleOn() {
@@ -54,7 +49,6 @@ void handleOff() {
 }
 
 void handleNotFound() {
-  digitalWrite(led, 1);
   String message = "File Not Found\n\n";
   message += "URI: ";
   message += server.uri();
@@ -67,12 +61,10 @@ void handleNotFound() {
     message += " " + server.argName(i) + ": " + server.arg(i) + "\n";
   }
   server.send(404, "text/plain", message);
-  digitalWrite(led, 0);
 }
 
 void setup(void) {
   pinMode(pin, OUTPUT);
-  digitalWrite(led, 0);
   Serial.begin(115200);
   WiFi.begin(ssid, password);
   Serial.println("");
