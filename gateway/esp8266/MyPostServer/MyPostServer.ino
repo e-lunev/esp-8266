@@ -28,9 +28,12 @@ const String postForms = "<html>\
   </head>\
   <body>\
       <h2>ESP Web Server</h2>\
-      <input type=\"submit\" value=\"on\">\
-      <input type=\"submit\" value=\"off\">\
-    </form>\
+        <form method=\"post\" enctype=\"text/plain\" action=\"/on\">\
+          <input type=\"submit\" value=\"on\">\
+      </form>\
+      <form method=\"post\" enctype=\"text/plain\" action=\"/off\">\
+          <input type=\"submit\" value=\"off\">\
+      </form>\
   </body>\
 </html>";
 
@@ -39,12 +42,12 @@ void handleRoot() {
 }
 
 void handleOn() {
-    server.send(200, "text/plain", "On");
+    server.send(200, "text/html", postForms);
     digitalWrite(pin, HIGH);
 }
 
 void handleOff() {
-    server.send(200, "text/plain", "Off");
+    server.send(200, "text/html", postForms);
      digitalWrite(pin, LOW);
 }
 
